@@ -109,11 +109,11 @@ describe('Teste o componente <Pokedex.js />', () => {
     const allBtn = screen.getByRole('button', {
       name: /all/i,
     });
-    // interagir
-    userEvent.click(allBtn);
     // aferir
     expect(allBtn).toBeInTheDocument();
     expect(allBtn).toBeVisible();
+    // interagir
+    userEvent.click(allBtn);
     // acessar
     const buttonNextPokemon = screen.getByRole('button', {
       name: /próximo pokémon/i,
@@ -124,5 +124,34 @@ describe('Teste o componente <Pokedex.js />', () => {
       userEvent.click(buttonNextPokemon);
     });
   });
+
+  test('Testa se o tipo de pokemon permanece ao usar o filtro e se muda ao clicar no button all', () => {
+    renderWithRouter(<Pokedex
+      pokemonList={ data }
+      isPokemonFavoriteById={ isPokemonFavoriteById }
+    />);
+
+    // acessando e interagindo com o fire button
+    const fireBtn = screen.getByRole('button', {
+      name: /fire/i,
+    });
+    userEvent.click(fireBtn);
+    const textFire = screen.getByTestId('pokemon-type');
+    expect(textFire.innerHTML).toBe('Fire');
+    const nextBtn = screen.getByRole('button', {
+      name: /próximo pokémon/i,
+    });
+    userEvent.click(nextBtn);
+    expect(textFire.innerHTML).toBe('Fire');
+
+    // acessando e interagindo com o all button
+    const allBtn = screen.getByRole('button', {
+      name: /all/i,
+    });
+    userEvent.click(allBtn);
+    const textElectric = screen.getByTestId('pokemon-type');
+    expect(textElectric.innerHTML).toBe('Electric');
+    userEvent.click(nextBtn);
+    expect(textFire.innerHTML).toBe('Fire');
+  });
 });
-// teste
