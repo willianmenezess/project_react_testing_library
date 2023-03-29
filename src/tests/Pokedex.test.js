@@ -125,3 +125,4 @@ describe('Teste o componente <Pokedex.js />', () => {
     });
   });
 });
+// teste
